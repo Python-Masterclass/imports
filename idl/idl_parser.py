@@ -1,4 +1,3 @@
-import dataclasses
 import re
 
 
@@ -9,8 +8,8 @@ type_map = {
 }
 
 
-def convert_idl(idl_data: str):
-    token_iter = (t.strip() for t in re.split(r"(\W)", idl_data) if t.strip() != "")
+def parse_idl(idl_data: str):
+    token_iter = (token for token in (t.strip() for t in re.split(r"(\W)", idl_data)) if token != "")
     attributes = []
     while token := next(token_iter):
         match token:
@@ -23,13 +22,4 @@ def convert_idl(idl_data: str):
                 assert next(token_iter) == ";"
             case "}":
                 break
-    idl_cls = dataclasses.make_dataclass(class_name, attributes)
-    return idl_cls
-
-
-if __name__ == "__main__":
-    with open("result_data.idl") as f:
-        data = f.read()
-    IdlCls = convert_idl(data)
-    x = IdlCls(1, "hallo", 3.14)
-    print(x)
+    return class_name, attributes
