@@ -20,4 +20,4 @@ def create_python_module(mod_name, directory="."):
 
 
 if __name__ == "__main__":
-    create_python_module("result_data")
+    create_python_module("interface")

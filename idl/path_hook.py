@@ -18,11 +18,13 @@ class IdlFileFinder(importlib.machinery.FileFinder):
             filepath = Path(p) / f"{leaf_name}.idl"
             if filepath.exists():
                 create_python_module(leaf_name, p)
-                return importlib.util.spec_from_file_location(fullname, Path(p) / f"{leaf_name}.py")
+                del sys.path_importer_cache[p]
 
 
 loader_details = (
     importlib.machinery.SourceFileLoader,
     importlib.machinery.SOURCE_SUFFIXES,
 )
-sys.path_hooks[0:0] = [IdlFileFinder.path_hook(loader_details)]
+
+sys.path_hooks.insert(0, IdlFileFinder.path_hook(loader_details))
+# importlib.invalidate_caches()

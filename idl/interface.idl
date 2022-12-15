@@ -1,0 +1,5 @@
+interface result_data {
+    long status;
+    string message;
+    float execution_time;
+}
